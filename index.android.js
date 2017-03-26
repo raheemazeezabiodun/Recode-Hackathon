@@ -5,18 +5,12 @@ import {
   Text,
   View
 } from 'react-native';
-import Tts from 'react-native-tts';
 import axios from 'axios';
 import SplashPage from './js/components/splash';
 import AccessVoice from './App';
 
 
 export default class voiceit extends Component {
-  componentDidMount() {
-    Tts.speak('welcome on board');
-    Tts.speak('second time');
-    
-  }
   render() {
     return (
       <AccessVoice />

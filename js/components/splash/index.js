@@ -13,8 +13,8 @@ class SplashPage extends Component {
     
     componentDidMount() {
         setTimeout(() => {
-            Storage.get('introWatched').then((introWatched) => {
-                const nextScreen = introWatched ? 'home' : 'home';
+            Storage.get('setup').then((introWatched) => {
+                const nextScreen = introWatched ? 'setup' : 'setup';
                 this.props.dispatch(reset([{
                     key: nextScreen,
                     index: 0

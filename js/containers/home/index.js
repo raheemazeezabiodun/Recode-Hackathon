@@ -13,32 +13,49 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName: 'Abbey',
-            keyword: 'balance'
+            userName: '',
+            keyword: 'balance',
+            acctNo: ''
         }
+    }
+
+    componentDidMount() {
+        Storage.get('acct').then((acct) => {
+            this.setState({
+                acctNo: acct
+            })
+        })
+
+        Storage.get('name').then((name) => {
+            this.setState({
+                userName: name
+            })
+        })
     }
     
     _handleProcessSpech = (speech) => {
-        var word = 'usandshjsd';
-        if (word) {
+        if (speech.indexOf(this.state.keyword)) {
             // make request
             // parse result to _haasyncndleEndpointResponse
-            axios.get('http://voiceit.mybluemix.net/api/hackService/name/0690000032')
-            .then(function (response) {
+            Tts.speak("I got your request, i will make an enquiry for you");
+            axios.get(`http://voiceit.mybluemix.net/api/hackService/name/${this.state.acctNo}`)
+            .then((response) => {
                 this.setState({
                     userName: response.data
                 })
-            }).catch(function (error) {
+            })
+            .catch((error) => {
                 Tts.speak('error getting your name');
             })
             // for demo
-            Tts.speak("I got your request, i will make an enquiry for you");
-            axios.get('http://voiceit.mybluemix.net/api/hackService/balance/0690000032')
-            .then(function (response) {
-                reply = `Hi ${this.state.userName}, your account balance is ${response.data}`;
-                Tts.speak('reply from response');
-            }).catch(function (error) {
-                Tts.speak(error);
+            
+            axios.get(`http://voiceit.mybluemix.net/api/hackService/balance/${this.state.acctNo}`)
+            .then((response) => {
+                reply = `Hi ${this.state.userName}, your account balance is ${response.data} Naira`;
+                Tts.speak(reply);
+            })
+            .catch((error) => {
+                Tts.speak(error.response);
             })
         }
 
